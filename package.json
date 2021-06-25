@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "*",
+    "@chainlink/contracts": "*",
+    "bn.js": "*"
+  }
+}
