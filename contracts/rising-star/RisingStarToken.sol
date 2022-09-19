@@ -47,26 +47,30 @@ contract RST is ERC20Pausable, Ownable, ERC20Permit, ERC20Snapshot {
         super._beforeTokenTransfer(from, to, amount);
     }
 
+    function renounceOwnership() public view override onlyOwner {
+        revert('RSToken: Dont leave the contract without owner');
+    }
+
     function burn(uint256 amount) external {
       require(amount > 0, "RSToken: Cannot burn zero amount");
       require(canBurn[msg.sender], "RSToken: Sender cannot burn");
       _burn(msg.sender, amount);
     }
 
-    function snapshot() public {
+    function snapshot() external {
         require(canSnapshot[msg.sender], "RSToken: Sender cannot snapshot");
         _snapshot();
     }
 
-    function pause() public onlyOwner {
+    function pause() external onlyOwner {
         _pause();
     }
 
-    function unpause() public onlyOwner {
+    function unpause() external onlyOwner {
         _unpause();
     }
 
-    function enableTrading() public onlyOwner {
+    function enableTrading() external onlyOwner {
         isTradingActive = true;
         emit EnableTrading();
     }
