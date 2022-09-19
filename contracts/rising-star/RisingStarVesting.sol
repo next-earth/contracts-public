@@ -115,7 +115,7 @@ contract RisingStarVesting {
      *
      * Any new request override the previous one if that is not confirmed.
      */
-    function submitPayeesChangeRequest(address[] memory newPayees) onlyOwner public {
+    function submitPayeesChangeRequest(address[] memory newPayees) onlyOwner external {
         require(newPayees.length == 7, "RSV: Invalid number of payees");
         payeesChangeRequest = ChangeRequest({requester: msg.sender, changeTo: newPayees});
         emit PayeesChangeRequestSubmitted(payeesChangeRequest);
@@ -124,7 +124,7 @@ contract RisingStarVesting {
     /**
      * @dev Confirm the current payees change request
      */
-    function confirmPayeesChangeRequest(address[] memory newPayees) onlyOwner public {
+    function confirmPayeesChangeRequest(address[] memory newPayees) onlyOwner external {
         require(payeesChangeRequest.requester != address(0), "RSV: There is nothing to confirm");
         require(payeesChangeRequest.requester != msg.sender, "RSV: Requester cannot confirm own request");
         require(newPayees.length == 7, "RSV: Invalid number of payees");
@@ -142,7 +142,7 @@ contract RisingStarVesting {
      *
      * Any new request override the previous one if that is not confirmed.
      */
-    function submitOwnersChangeRequest(address[] memory newOwners) onlyOwner public {
+    function submitOwnersChangeRequest(address[] memory newOwners) onlyOwner external {
         require(newOwners.length == 3, "RSV: Invalid number of owners");
         ownersChangeRequest = ChangeRequest({requester: msg.sender, changeTo: newOwners});
         emit OwnersChangeRequestSubmitted(ownersChangeRequest);
@@ -151,7 +151,7 @@ contract RisingStarVesting {
     /**
      * @dev Confirm the current owners change request
      */
-    function confirmOwnersChangeRequest(address[] memory newOwners) onlyOwner public {
+    function confirmOwnersChangeRequest(address[] memory newOwners) onlyOwner external {
         require(ownersChangeRequest.requester != address(0), "RSV: There is nothing to confirm");
         require(ownersChangeRequest.requester != msg.sender, "RSV: Requester cannot confirm own request");
         require(newOwners.length == 3, "RSV: Invalid number of owners");
@@ -165,7 +165,7 @@ contract RisingStarVesting {
     }
 
     // Can only be called once
-    function startVesting() public onlyOwner {
+    function startVesting() external onlyOwner {
         require(vestingStartedAt == 0, "RSV: Vesting already started");
         require(starTokenAddress != address(0), "RSV: STAR Token address must be set");
         require(IERC20(starTokenAddress).balanceOf(address(this)) == totalSupply * 950 / 1000, "RSV: Contract not funded");
@@ -173,7 +173,7 @@ contract RisingStarVesting {
     }
 
     // Can only be called once
-    function setStarTokenAddress(address _tokenAddress) public onlyOwner {
+    function setStarTokenAddress(address _tokenAddress) external onlyOwner {
         require(starTokenAddress == address(0), "RSV: STAR Token address already set");
         require(_tokenAddress != address(0), "RSV: Star Token address cannot be the zero address");
         starTokenAddress = _tokenAddress;
